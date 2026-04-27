@@ -556,12 +556,12 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	end
 	function Label:SetDesc(NewDesc)
 		if type(NewDesc) == "string" and NewDesc:gsub(" ", ""):len() > 0 then
-			DescL.Visible = true
+			DescL.Visible = false
 			DescL.Text = NewDesc
 			LabelHolder.Position = UDim2.new(0, 10, 0)
 			LabelHolder.AnchorPoint = Vector2.new(0, 0)
 		else
-			DescL.Visible = false
+			DescL.Visible = true
 			DescL.Text = ""
 			LabelHolder.Position = UDim2.new(0, 10, 0.5)
 			LabelHolder.AnchorPoint = Vector2.new(0, 0.5)
@@ -814,10 +814,20 @@ function redzlib:MakeWindow(Configs)
 		Name = "Dropdown"
 	})
 	
-	local TopBar = Create("Frame", Components, {
+local TopBar = Create("Frame", Components, {
 		Size = UDim2.new(1, 0, 0, 28),
 		BackgroundTransparency = 1,
 		Name = "Top Bar"
+	})
+
+	local CornerLogo = Create("ImageLabel", TopBar, {
+		Size = UDim2.fromOffset(20, 20),
+		Position = UDim2.new(1, -45, 0.5, 0),
+		AnchorPoint = Vector2.new(1, 0.5),
+		BackgroundTransparency = 1,
+		Image = "rbxassetid://110341995780348",
+		ScaleType = Enum.ScaleType.Fit,
+		ZIndex = 15
 	})
 	
 	local Title = InsertTheme(Create("TextLabel", TopBar, {
@@ -911,7 +921,7 @@ function redzlib:MakeWindow(Configs)
 		ImageTransparency = 0,
 		ScaleType = Enum.ScaleType.Fit,
 		ZIndex = -4,
-		Visible = true
+		Visible = false
 	})
 
 	local function UpdateRotatingLogoSize()
@@ -1122,28 +1132,57 @@ function redzlib:MakeWindow(Configs)
 		ActiveParticles = {}
 	end
 
-	local function StartParticles()
-		BackgroundImage.Visible = false
-		BackgroundDim.Visible   = false
-		if not ParticleConnection then
-			ParticleConnection = RunService.Heartbeat:Connect(function()
-				UpdateCyberpunkParticles()
-				SpawnCyberpunkSystem()
-			end)
-		end
-	end
+local function StartParticles()
+    BackgroundImage.Visible = false
+    BackgroundDim.Visible   = false
+    if not ParticleConnection then
+        ParticleConnection = RunService.Heartbeat:Connect(function()
+            UpdateCyberpunkParticles()
+            SpawnCyberpunkSystem()
+        end)
+    end
+end
 
-	local function StartImage(url, transparency, dim)
-		StopParticles()
-		BackgroundImage.Image             = url or ""
-		BackgroundImage.ImageTransparency = transparency or 0.45
-		BackgroundDim.BackgroundTransparency = dim or 0.45
-		BackgroundImage.Visible = true
-		BackgroundDim.Visible   = true
-	end
+RunService.Heartbeat:Connect(function()
+    if math.random(1, 3) == 1 then
+        local scrollSize = MainScroll.AbsoluteSize
+        local drop = Create("Frame", MainScroll, {
+            Size = UDim2.fromOffset(2, math.random(10, 20)),
+            Position = UDim2.fromOffset(math.random(0, math.max(1, scrollSize.X)), -20),
+            BackgroundColor3 = Color3.fromRGB(math.random(150, 220), 0, 0),
+            BackgroundTransparency = 0.2,
+            BorderSizePixel = 0,
+            ZIndex = 10
+        })
+        Create("UICorner", drop, { CornerRadius = UDim.new(1, 0) })
+        local speed = math.random(60, 120)
+        task.spawn(function()
+            while drop and drop.Parent do
+                drop.Position = UDim2.fromOffset(
+                    drop.Position.X.Offset,
+                    drop.Position.Y.Offset + speed * 0.016
+                )
+                if drop.Position.Y.Offset > scrollSize.Y + 20 then
+                    drop:Destroy()
+                    break
+                end
+                RunService.Heartbeat:Wait()
+            end
+        end)
+    end
+end)
 
-	-- شغّل الجزيئات تلقائياً عند البداية
-	StartParticles()
+local function StartImage(url, transparency, dim)
+    StopParticles()
+    BackgroundImage.Image             = url or ""
+    BackgroundImage.ImageTransparency = transparency or 0.45
+    BackgroundDim.BackgroundTransparency = dim or 0.45
+    BackgroundImage.Visible = true
+    BackgroundDim.Visible   = true
+end
+
+-- شغّل الجزيئات تلقائياً عند البداية
+StartParticles()
 
 	local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 35, 0, 35),
@@ -1290,65 +1329,9 @@ function redzlib:MakeWindow(Configs)
 		end
 	end
 
-function Window:SetThemeParticles(enabled)
-    Window:SetBackground(enabled and "Particles" or "None")
-end
-
--- ← أضف هنا
-function Window:SetSlideshowBackground(Images, Configs)
-    Configs = Configs or {}
-    local Interval     = Configs.Interval     or 3
-    local FadeTime     = Configs.FadeTime     or 0.8
-    local Transparency = Configs.Transparency or 0.3
-    local Dim          = Configs.Dim          or 0.5
-    StopParticles()
-    local old = ParticleContainer:FindFirstChild("Slide_A")
-    if old then old:Destroy() end
-    local old2 = ParticleContainer:FindFirstChild("Slide_B")
-    if old2 then old2:Destroy() end
-    local SlideA = Create("ImageLabel", ParticleContainer, {
-        Name = "Slide_A",
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ScaleType = Enum.ScaleType.Crop,
-        ImageTransparency = 1,
-        ZIndex = -2
-    })
-    local SlideB = Create("ImageLabel", ParticleContainer, {
-        Name = "Slide_B",
-        Size = UDim2.new(1, 0, 1, 0),
-        BackgroundTransparency = 1,
-        ScaleType = Enum.ScaleType.Crop,
-        ImageTransparency = 1,
-        ZIndex = -2
-    })
-    BackgroundDim.BackgroundTransparency = Dim
-    BackgroundDim.Visible = true
-    local currentIndex = 1
-    local Active = true
-    ParticleContainer.AncestryChanged:Connect(function()
-        Active = false
-    end)
-    task.spawn(function()
-        local isA = true
-        while Active do
-            local imgIndex = ((currentIndex - 1) % #Images) + 1
-            local nextIndex = (imgIndex % #Images) + 1
-            local Current = isA and SlideA or SlideB
-            local Next    = isA and SlideB or SlideA
-            Next.Image = Images[nextIndex]
-            Next.ImageTransparency = 1
-            CreateTween({Next,    "ImageTransparency", Transparency, FadeTime})
-            CreateTween({Current, "ImageTransparency", 1,            FadeTime})
-            task.wait(FadeTime)
-            currentIndex = nextIndex
-            isA = not isA
-            task.wait(Interval)
-        end
-    end)
-    SlideA.Image = Images[1]
-    CreateTween({SlideA, "ImageTransparency", Transparency, FadeTime})
-end
+	function Window:SetThemeParticles(enabled)
+		Window:SetBackground(enabled and "Particles" or "None")
+	end
 
 	function Window:AddMinimizeButton(Configs)
 		local Button = MakeDrag(Create("ImageButton", ScreenGui, {
