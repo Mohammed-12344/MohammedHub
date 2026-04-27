@@ -556,12 +556,12 @@ local function ButtonFrame(Instance, Title, Description, HolderSize)
 	end
 	function Label:SetDesc(NewDesc)
 		if type(NewDesc) == "string" and NewDesc:gsub(" ", ""):len() > 0 then
-			DescL.Visible = false
+			DescL.Visible = true
 			DescL.Text = NewDesc
 			LabelHolder.Position = UDim2.new(0, 10, 0)
 			LabelHolder.AnchorPoint = Vector2.new(0, 0)
 		else
-			DescL.Visible = true
+			DescL.Visible = false
 			DescL.Text = ""
 			LabelHolder.Position = UDim2.new(0, 10, 0.5)
 			LabelHolder.AnchorPoint = Vector2.new(0, 0.5)
@@ -814,21 +814,28 @@ function redzlib:MakeWindow(Configs)
 		Name = "Dropdown"
 	})
 	
-local TopBar = Create("Frame", Components, {
+	local TopBar = Create("Frame", Components, {
 		Size = UDim2.new(1, 0, 0, 28),
 		BackgroundTransparency = 1,
 		Name = "Top Bar"
 	})
 
-	local CornerLogo = Create("ImageLabel", TopBar, {
-		Size = UDim2.fromOffset(20, 20),
-		Position = UDim2.new(1, -45, 0.5, 0),
-		AnchorPoint = Vector2.new(1, 0.5),
-		BackgroundTransparency = 1,
-		Image = "rbxassetid://110341995780348",
-		ScaleType = Enum.ScaleType.Fit,
-		ZIndex = 15
-	})
+local TopBar = Create("Frame", Components, {
+    Size = UDim2.new(1, 0, 0, 28),
+    BackgroundTransparency = 1,
+    Name = "Top Bar"
+})
+
+-- ← هنا
+local CornerLogo = Create("ImageLabel", TopBar, {
+    Size = UDim2.fromOffset(20, 20),
+    Position = UDim2.new(1, -45, 0.5, 0),
+    AnchorPoint = Vector2.new(1, 0.5),
+    BackgroundTransparency = 1,
+    Image = "rbxassetid://110341995780348",
+    ScaleType = Enum.ScaleType.Fit,
+    ZIndex = 15
+})
 	
 	local Title = InsertTheme(Create("TextLabel", TopBar, {
 		Position = UDim2.new(0, 15, 0.5),
@@ -921,7 +928,7 @@ local TopBar = Create("Frame", Components, {
 		ImageTransparency = 0,
 		ScaleType = Enum.ScaleType.Fit,
 		ZIndex = -4,
-		Visible = false
+		Visible = true
 	})
 
 	local function UpdateRotatingLogoSize()
@@ -1132,57 +1139,28 @@ local TopBar = Create("Frame", Components, {
 		ActiveParticles = {}
 	end
 
-local function StartParticles()
-    BackgroundImage.Visible = false
-    BackgroundDim.Visible   = false
-    if not ParticleConnection then
-        ParticleConnection = RunService.Heartbeat:Connect(function()
-            UpdateCyberpunkParticles()
-            SpawnCyberpunkSystem()
-        end)
-    end
-end
+	local function StartParticles()
+		BackgroundImage.Visible = false
+		BackgroundDim.Visible   = false
+		if not ParticleConnection then
+			ParticleConnection = RunService.Heartbeat:Connect(function()
+				UpdateCyberpunkParticles()
+				SpawnCyberpunkSystem()
+			end)
+		end
+	end
 
-RunService.Heartbeat:Connect(function()
-    if math.random(1, 3) == 1 then
-        local scrollSize = MainScroll.AbsoluteSize
-        local drop = Create("Frame", MainScroll, {
-            Size = UDim2.fromOffset(2, math.random(10, 20)),
-            Position = UDim2.fromOffset(math.random(0, math.max(1, scrollSize.X)), -20),
-            BackgroundColor3 = Color3.fromRGB(math.random(150, 220), 0, 0),
-            BackgroundTransparency = 0.2,
-            BorderSizePixel = 0,
-            ZIndex = 10
-        })
-        Create("UICorner", drop, { CornerRadius = UDim.new(1, 0) })
-        local speed = math.random(60, 120)
-        task.spawn(function()
-            while drop and drop.Parent do
-                drop.Position = UDim2.fromOffset(
-                    drop.Position.X.Offset,
-                    drop.Position.Y.Offset + speed * 0.016
-                )
-                if drop.Position.Y.Offset > scrollSize.Y + 20 then
-                    drop:Destroy()
-                    break
-                end
-                RunService.Heartbeat:Wait()
-            end
-        end)
-    end
-end)
+	local function StartImage(url, transparency, dim)
+		StopParticles()
+		BackgroundImage.Image             = url or ""
+		BackgroundImage.ImageTransparency = transparency or 0.45
+		BackgroundDim.BackgroundTransparency = dim or 0.45
+		BackgroundImage.Visible = true
+		BackgroundDim.Visible   = true
+	end
 
-local function StartImage(url, transparency, dim)
-    StopParticles()
-    BackgroundImage.Image             = url or ""
-    BackgroundImage.ImageTransparency = transparency or 0.45
-    BackgroundDim.BackgroundTransparency = dim or 0.45
-    BackgroundImage.Visible = true
-    BackgroundDim.Visible   = true
-end
-
--- شغّل الجزيئات تلقائياً عند البداية
-StartParticles()
+	-- شغّل الجزيئات تلقائياً عند البداية
+	StartParticles()
 
 	local ControlSize1, ControlSize2 = MakeDrag(Create("ImageButton", MainFrame, {
 		Size = UDim2.new(0, 35, 0, 35),
