@@ -815,15 +815,17 @@ function redzlib:MakeWindow(Configs)
 	})
 	
 local TopBar = Create("Frame", Components, {
-    Size = UDim2.new(1, 0, 0, 60), -- رفعنا الطول لـ 60 ليناسب حجم الصورة (50)
+    Size = UDim2.new(1, 0, 0, 60),
     BackgroundTransparency = 1,
+    ClipsDescendants = false, -- ضروري جداً لكي تظهر الصورة لو خرجت عن الحدود
     Name = "Top Bar"
 })
 
 local CornerLogo = Create("ImageLabel", TopBar, {
-    Size = UDim2.fromOffset(50, 50), -- تم تكبير الحجم إلى 50 بكسل
-    Position = UDim2.new(0, 12, 0.5, 0), -- زدت المسافة لـ 12 بكسل لتبدو متناسقة أكثر
-    AnchorPoint = Vector2.new(0, 0.5),
+    Size = UDim2.fromOffset(50, 50),
+    -- الإحداثيات التالية تضعها في الزاوية اليمنى العلوية من الخارج:
+    Position = UDim2.new(1, 10, 0, -10), 
+    AnchorPoint = Vector2.new(0, 1), -- يحدد نقطة الارتكاز لضبط مكانها بدقة بالخارج
     BackgroundTransparency = 1,
     Image = "rbxassetid://110341995780348",
     ScaleType = Enum.ScaleType.Fit,
