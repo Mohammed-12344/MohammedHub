@@ -821,13 +821,14 @@ local TopBar = Create("Frame", Components, {
 })
 
 local CornerLogo = Create("ImageLabel", TopBar, {
-    Size = UDim2.fromOffset(50, 50), -- الحجم الكبير الذي طلبته
-    Position = UDim2.new(0, -5, 0, -15), -- المكان (فوق يسار وبارزة للخارج)
+    Size = UDim2.fromOffset(100, 100), -- الحجم الآن كبير جداً (100 بكسل)
+    -- قمت بتعديل الإزاحة لتناسب الحجم الجديد وتظل بارزة لليسار وللأعلى
+    Position = UDim2.new(0, -10, 0, -20), 
     AnchorPoint = Vector2.new(0.5, 0.5),
     BackgroundTransparency = 1,
-    Image = "rbxassetid://114882167860607", -- المعرف الجديد الخاص بك
+    Image = "rbxassetid://114882167860607",
     ScaleType = Enum.ScaleType.Fit,
-    ZIndex = 100 -- لضمان ظهورها فوق كل شيء
+    ZIndex = 100
 })
 	
 	local Title = InsertTheme(Create("TextLabel", TopBar, {
