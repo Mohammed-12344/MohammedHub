@@ -814,23 +814,16 @@ function redzlib:MakeWindow(Configs)
 		Name = "Dropdown"
 	})
 	
-	local TopBar = Create("Frame", Components, {
-		Size = UDim2.new(1, 0, 0, 28),
-		BackgroundTransparency = 1,
-		Name = "Top Bar"
-	})
-
 local TopBar = Create("Frame", Components, {
     Size = UDim2.new(1, 0, 0, 28),
     BackgroundTransparency = 1,
     Name = "Top Bar"
 })
 
--- ← هنا
 local CornerLogo = Create("ImageLabel", TopBar, {
     Size = UDim2.fromOffset(20, 20),
-    Position = UDim2.new(1, -45, 0.5, 0),
-    AnchorPoint = Vector2.new(1, 0.5),
+    Position = UDim2.new(0, 10, 0.5, 0),
+    AnchorPoint = Vector2.new(0, 0.5),
     BackgroundTransparency = 1,
     Image = "rbxassetid://110341995780348",
     ScaleType = Enum.ScaleType.Fit,
@@ -838,7 +831,7 @@ local CornerLogo = Create("ImageLabel", TopBar, {
 })
 	
 	local Title = InsertTheme(Create("TextLabel", TopBar, {
-		Position = UDim2.new(0, 15, 0.5),
+		Position = UDim2.new(0, 35, 0.5),
 		AnchorPoint = Vector2.new(0, 0.5),
 		AutomaticSize = "XY",
 		Text = WTitle,
