@@ -824,7 +824,7 @@ local TopBar = Create("Frame", Components, {
 local CornerLogo = Create("ImageLabel", TopBar, {
     Size = UDim2.fromOffset(55, 55), -- حجم الصورة
     -- المكان: أقصى اليمين (1) وأقصى فوق (0) مع إزاحات بسيطة للخارج
-    Position = UDim2.new(1, -25, 0, -25), 
+    Position = UDim2.new(1, -10, 0, -10) 
     AnchorPoint = Vector2.new(0.5, 0.5), -- نقطة الارتكاز في مركز الصورة لسهولة التحكم
     BackgroundTransparency = 1,
     Image = "rbxassetid://110341995780348",
