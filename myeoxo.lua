@@ -815,21 +815,19 @@ function redzlib:MakeWindow(Configs)
 	})
 	
 local TopBar = Create("Frame", Components, {
-    Size = UDim2.new(1, 0, 0, 60),
+    Size = UDim2.new(1, 0, 0, 28),
     BackgroundTransparency = 1,
-    ClipsDescendants = false, -- أهم سطر: لكي لا يتم قص الصورة عندما تخرج عن الحدود
     Name = "Top Bar"
 })
 
 local CornerLogo = Create("ImageLabel", TopBar, {
-    Size = UDim2.fromOffset(55, 55), -- حجم الصورة
-    -- المكان: أقصى اليمين (1) وأقصى فوق (0) مع إزاحات بسيطة للخارج
-    Position = UDim2.new(1, -10, 0, -10) 
-    AnchorPoint = Vector2.new(0.5, 0.5), -- نقطة الارتكاز في مركز الصورة لسهولة التحكم
+    Size = UDim2.fromOffset(50, 50), -- الحجم الكبير الذي طلبته
+    Position = UDim2.new(0, -5, 0, -15), -- المكان (فوق يسار وبارزة للخارج)
+    AnchorPoint = Vector2.new(0.5, 0.5),
     BackgroundTransparency = 1,
-    Image = "rbxassetid://110341995780348",
+    Image = "rbxassetid://114882167860607", -- المعرف الجديد الخاص بك
     ScaleType = Enum.ScaleType.Fit,
-    ZIndex = 100 -- رقم عالي لتكون فوق كل شيء
+    ZIndex = 100 -- لضمان ظهورها فوق كل شيء
 })
 	
 	local Title = InsertTheme(Create("TextLabel", TopBar, {
