@@ -815,14 +815,14 @@ function redzlib:MakeWindow(Configs)
 	})
 	
 local TopBar = Create("Frame", Components, {
-    Size = UDim2.new(1, 0, 0, 28),
+    Size = UDim2.new(1, 0, 0, 60), -- رفعنا الطول لـ 60 ليناسب حجم الصورة (50)
     BackgroundTransparency = 1,
     Name = "Top Bar"
 })
 
 local CornerLogo = Create("ImageLabel", TopBar, {
-    Size = UDim2.fromOffset(20, 20),
-    Position = UDim2.new(0, 10, 0.5, 0),
+    Size = UDim2.fromOffset(50, 50), -- تم تكبير الحجم إلى 50 بكسل
+    Position = UDim2.new(0, 12, 0.5, 0), -- زدت المسافة لـ 12 بكسل لتبدو متناسقة أكثر
     AnchorPoint = Vector2.new(0, 0.5),
     BackgroundTransparency = 1,
     Image = "rbxassetid://110341995780348",
